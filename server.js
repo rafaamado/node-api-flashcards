@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express');
 const mongoose = require('mongoose');
 const requireDir = require('require-dir');
@@ -7,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 // Initializing database
-mongoose.connect(connectionString, {useNewUrlParser: true} );
+mongoose.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: true} );
 
 // Register models
 requireDir('./src/models');
