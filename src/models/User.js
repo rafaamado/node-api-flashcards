@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
     password:{
         type: String,
         required: true,
+        select: false
     },
     createdAt: {
         type: Date,
@@ -20,12 +21,9 @@ const UserSchema = new mongoose.Schema({
     },
 })
 
-UserSchema.methods.generateHash = (password) => {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(), null)
-}
-
-UserSchema.methods.verifyPassword = (password, databasePassword) => {
-    return bcrypt.compareSync(password, databasePassword)
+UserSchema.methods.comparePassword = (password) => {
+    console.log(password, this.password, this.name);
+    return bcrypt.compareSync(password, this.password);
 }
 
 mongoose.model('User', UserSchema);

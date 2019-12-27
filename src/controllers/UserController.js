@@ -8,19 +8,19 @@ function generateAcessToken(user){
     return jwt.sign(
         { id: user.id }, 
         process.env.ACESS_TOKEN_SECRET, 
-        { expiresIn: '1d' }  // one day
+        { expiresIn: '10h' }  // ten hours
     );
 };
 
 module.exports = {
     async index(req, res) {
-        res.send("Hello from UserController: " + req.id);
+        res.send("Hello from UserController: " + req.userId);
     },
     
     async register(req, res){
         const email = req.body.email;
         try{
-            if (await User.findOne( {email} ))
+            if (await User.findOne( {email} ).exec())
                 return res.status(400).send( { error : 'User already exits' } );
             
             const salt = bcrypt.genSaltSync();
@@ -41,13 +41,12 @@ module.exports = {
     },
 
     async login(req, res){
-        let user;
-        await User.findOne({ email : req.body.email}, function(error, result){
-            user = result;
-        });
-        if (user == null)
+
+        const user = await User.findOne( {email : req.body.email }).select('+password').exec();
+
+        if (!user)
             return res.status(400).send('Cannot find user');
-            
+        
         try{
             if ( bcrypt.compareSync(req.body.password, user.password) ){
                 const acessToken = generateAcessToken(user);
