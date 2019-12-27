@@ -6,7 +6,7 @@ const Deck = mongoose.model('Deck');
 
 routes.get('/', async (req, res) => {
     try{
-        const decks = await Deck.find({user : req.userId }).populate('cards');
+        const decks = await Deck.find({user : req.userId });
         return res.json(decks);
     }catch{
         return res.status(400).send({error: 'Error loading decks'});

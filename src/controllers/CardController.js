@@ -2,14 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const Card = mongoose.model('Card');
-const Deck = mongoose.model('Deck');
 
 module.exports= { 
     async store(req, res) {
         try{
-            console.log(req.params);
             const card = await Card.create({ ...req.body, deck: req.params.deckId });
-
             res.send(card);
         }catch(e){
             console.log(e);
