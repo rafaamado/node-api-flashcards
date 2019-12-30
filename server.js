@@ -1,11 +1,13 @@
 require('dotenv').config()
-
 const express = require('express');
 const mongoose = require('mongoose');
 const requireDir = require('require-dir');
+const cors = require('cors');
+
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const {user, password, db, server} =  process.env;
 const connectionString = `mongodb+srv://${user}:${password}@${server}/${db}`;

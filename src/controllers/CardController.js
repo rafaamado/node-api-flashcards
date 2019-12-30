@@ -13,9 +13,21 @@ module.exports= {
             return res.status(400).send({error: 'Error creating new card'});
         }
     },
-    async show(req, res) {
+    async showDeckCards(req, res) {
         try{
-            const cards = await Card.find({deck : req.params.deckId });  //.populate('user');
+            const cards = await Card.find({deck : req.params.deckId, function(err, card){
+                card.deck.user == req.userId; 
+            }})
+            .populate({ path : 'deck', select: 'name user'});
+            return res.json(cards);
+        }catch{
+            return res.status(400).send({error: 'Error loading cards'});
+        }
+    },
+    async showUserCards(req, res) {
+        try{
+            const cards = await Card.find({'deck.user' : req.params.deckId})
+                                    .populate({ path : 'deck', select: 'name user'});
             return res.json(cards);
         }catch{
             return res.status(400).send({error: 'Error loading cards'});

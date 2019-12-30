@@ -9,11 +9,13 @@ const CardController = require('./controllers/CardController');
 routes.get("/ola", authMiddleware, UserController.index);
 routes.post("/user/register", UserController.register);
 routes.post("/user/login", UserController.login);
+routes.post('/user/validateToken', authMiddleware, UserController.validateToken);
 
 routes.use('/deck',authMiddleware, DeckController);
 
 routes.post('/deck/:deckId/card', authMiddleware, CardController.store);
-routes.get('/deck/:deckId/card', authMiddleware, CardController.show);
+routes.get('/deck/:deckId/card', authMiddleware, CardController.showDeckCards);
+routes.get('/cards', authMiddleware, CardController.showUserCards);
 routes.put('/deck/:deckId/card/:cardId', authMiddleware, CardController.update);
 routes.delete('/deck/:deckId/card/:cardId', authMiddleware, CardController.delete);
 
