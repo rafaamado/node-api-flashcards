@@ -13,6 +13,18 @@ module.exports= {
             return res.status(400).send({error: 'Error creating new card'});
         }
     },
+
+    async showCard (req, res) {
+        try{
+            const card = await Card.findById(req.params.cardId);
+            res.send(card);
+        }
+        catch(err){
+            console.log(err);
+            return res.status(400).send({error: 'Error loading card'});
+        }
+    },
+
     async showDeckCards(req, res) {
         try{
             const cards = await Card.find({deck : req.params.deckId, function(err, card){
@@ -92,9 +104,10 @@ module.exports= {
                 card.reviewCount = 0;
                 card.lastReview = Date.now();
                 card.nextReview = Date.now();
+                card.progress = enumCardAsw;
             }
             card = await Card.findByIdAndUpdate(card._id, card, {new: true, useFindAndModify: false}).lean();
-            card.progress = enumCardAsw;
+
             return res.json(card);
         }
         catch(err){
@@ -105,15 +118,15 @@ module.exports= {
 
     async update(req, res){
         try{
-            console.log(req.params);
             const card = await Card.findOneAndUpdate(
                 {_id: req.params.cardId, deck: req.params.deckId }, 
                 req.body, 
-                {new: true}
+                {new: true, useFindAndModify: false}
             );
             res.send(card);
-        }catch{
-            return res.status(400).send({error: 'Error deleting card'});
+        }catch(err){
+            console.log(err);
+            return res.status(400).send({error: 'Error updating card'});
         }
     },
     async delete(req, res){

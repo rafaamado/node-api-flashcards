@@ -19,7 +19,8 @@ routes.use('/deck',authMiddleware, DeckController);
 /*  Card    */
 routes.post('/deck/:deckId/card', authMiddleware, CardController.store);
 
-routes.get('/deck/:deckId/card', authMiddleware, CardController.showDeckCards);
+routes.get('/deck/:deckId/cards', authMiddleware, CardController.showDeckCards);
+routes.get('/card/:cardId', authMiddleware, CardController.showCard);
 routes.get('/deck/:deckId/learn', authMiddleware, CardController.learnDeck);
 routes.get('/cards', authMiddleware, CardController.showUserCards);
 
