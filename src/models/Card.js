@@ -15,13 +15,16 @@ const CardSchema = new mongoose.Schema({
         required: true
     },
     reviewCount: {
-        type: Number
+        type: Number,
+        default: 0
     },
     lastReview: {
-        type: Date
+        type: Date,
+        default: null
     },
     nextReview: {
-        type: Date
+        type: Date,
+        default: null
     },
     createdAt: {
         type: Date,

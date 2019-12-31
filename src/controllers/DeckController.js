@@ -18,17 +18,19 @@ routes.get('/mydecks', async (req, res) => {
     try{
         let decks = await Deck.find({user : req.userId }).lean().exec();
         for(let i=0; i < decks.length; i++ ){
-            let query = Card.find({deck : decks[i]._id});
-            let count = await Card.countDocuments(query).exec();
+            const count = await Card.find({deck : decks[i]._id}).countDocuments().exec();
             decks[i].totalCards = count;
 
-            query = await Card.find({
+            const countStudy = await Card.find({
                 deck : decks[i]._id,
-                createdAt: {$gte: Date.now()}
-            })
-            count = await Card.countDocuments(query).exec();
+                $or: [ 
+                    {nextReview: {$lte: Date.now()}},
+                    {nextReview: null},
+                    {lastReview: null}
+                ]
+            }).countDocuments().exec();
 
-            decks[i].cardsToStudy = count;
+            decks[i].cardsToStudy = countStudy;
         }
         return res.json(decks);
     }catch(err){
