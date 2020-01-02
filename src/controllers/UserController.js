@@ -45,7 +45,7 @@ module.exports = {
         const user = await User.findOne( {email : req.body.email }).select('+password').exec();
 
         if (!user)
-            return res.status(400).send( {error: 'Cannot find user'} );
+            return res.status(400).send( {error: 'Incorrect username or password.'} );
         
         try{
             if ( bcrypt.compareSync(req.body.password, user.password) ){
@@ -53,7 +53,7 @@ module.exports = {
                 //const refreshToken = jwt.sign(user.email, process.env.REFRESH_TOKEN_SECRET);
                 res.json({acessToken : acessToken});
             }else{
-                res.send.status(400).send('Not allowed');
+                res.status(400).send({error: 'Incorrect username or password.'});
             }
         }catch(e){
             console.log(e);

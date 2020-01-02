@@ -104,9 +104,9 @@ module.exports= {
                 card.reviewCount = 0;
                 card.lastReview = Date.now();
                 card.nextReview = Date.now();
-                card.progress = enumCardAsw;
             }
             card = await Card.findByIdAndUpdate(card._id, card, {new: true, useFindAndModify: false}).lean();
+            card.progress = enumCardAsw.multiple(card.reviewCount);
 
             return res.json(card);
         }
