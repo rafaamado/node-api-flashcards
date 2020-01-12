@@ -58,7 +58,7 @@ module.exports= {
                     {nextReview: null},
                     {lastReview: null}
                 ] 
-            }).lean().exec();
+            }).populate({ path : 'deck', select: 'frontLanguage backLanguage'}).lean().exec();
 
             cards = cards.map(card => {
                 if (card.reviewCount > 0)

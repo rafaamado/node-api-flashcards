@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const LanguageSchema = require('./Language');
 
 const DeckSchema = new mongoose.Schema({
     name: {
@@ -7,6 +8,14 @@ const DeckSchema = new mongoose.Schema({
     },
     description: {
         type: String
+    },
+    frontLanguage: {
+        type: LanguageSchema,
+        required: true
+    },
+    backLanguage: {
+        type: LanguageSchema,
+        required: true
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

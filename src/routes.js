@@ -5,6 +5,7 @@ const authMiddleware = require('./middlewares/Auth');
 const UserController = require('./controllers/UserController');
 const DeckController = require('./controllers/DeckController');
 const CardController = require('./controllers/CardController');
+const LanguageController = require('./controllers/LanguageController');
 
 
 /*  User    */
@@ -28,5 +29,8 @@ routes.put('/deck/:deckId/card/:cardId', authMiddleware, CardController.update);
 routes.put('/deck/:deckId/card/:cardId/learn',authMiddleware, CardController.learnCard);
 
 routes.delete('/deck/:deckId/card/:cardId', authMiddleware, CardController.delete);
+
+/* Language */
+routes.get('/languages',LanguageController.show)
 
 module.exports = routes;
